@@ -85,6 +85,10 @@
                         class="flex items-center px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors shadow-brand-500/30">
                         <span class="material-symbols-outlined text-sm mr-1">person_add</span> Add Team
                     </button>
+                    <button type="button" onclick="managerApp.openModal('createUserModal')"
+                        class="flex items-center px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors shadow-green-500/30 ml-2">
+                        <span class="material-symbols-outlined text-sm mr-1">person_add_alt</span> Create User
+                    </button>
                 </form>
 
                 <div class="h-6 w-px bg-gray-300 dark:bg-slate-600 mx-1"></div>
@@ -104,8 +108,13 @@
                     <span class="material-symbols-outlined">dark_mode</span>
                 </button>
 
+                <a href="../index.html"
+                    class="hidden sm:flex items-center px-3 py-1.5 text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 rounded hover:bg-brand-100 dark:bg-brand-900/30 dark:text-brand-300 dark:border-brand-800 transition-colors">
+                    <span class="material-symbols-outlined text-sm mr-1">dashboard</span> Switch to PMO
+                </a>
+
                 <button id="btnLogout"
-                    class="hidden sm:flex items-center px-3 py-1.5 text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 rounded hover:bg-brand-100 dark:bg-brand-900/30 dark:text-brand-300 dark:border-brand-800 transition-colors"
+                    class="hidden sm:flex items-center px-3 py-1.5 text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded hover:bg-red-100 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800 transition-colors"
                     onclick="managerApp.handleLogout()">
                     <span class="material-symbols-outlined text-sm mr-1">logout</span> Sign Out
                 </button>
@@ -145,7 +154,8 @@
                             <div>
                                 <label
                                     class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Password</label>
-                                <input id="authPassword" type="password" required
+                                <input id="authPassword" type="password" required pattern="\d{6}" maxlength="6"
+                                    placeholder="ddmmyy" title="6 digits (e.g. birthday ddmmyy)"
                                     class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition-colors">
                             </div>
                         </div>
@@ -156,6 +166,63 @@
                             <span class="material-symbols-outlined text-[18px]">login</span> Authenticate
                         </button>
                         <p id="authErrorMsg" class="text-xs text-red-500 text-center font-bold mt-3 h-4"></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- CREATE USER MODAL -->
+    <div class="hidden fixed inset-0 z-[100] overflow-y-auto" id="createUserModal">
+        <div class="flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm"
+                onclick="managerApp.closeModal('createUserModal')"></div>
+            <div
+                class="inline-block align-bottom bg-white dark:bg-slate-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md w-full relative z-[110]">
+                <form onsubmit="managerApp.handleCreateUser(event)">
+                    <div class="bg-white dark:bg-slate-800 px-6 py-6 border-t-4 border-green-500">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Create New User</h3>
+                            <button type="button" class="text-gray-400 hover:text-gray-500"
+                                onclick="managerApp.closeModal('createUserModal')">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-6">Create a new user account in Supabase.</p>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Salary
+                                    No. (6 digits)</label>
+                                <input id="createSalaryNo" type="text" required pattern="\d{6}" maxlength="6"
+                                    placeholder="e.g. 123456"
+                                    class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-green-500 focus:border-green-500 transition-colors">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Password</label>
+                                <input id="createPassword" type="password" required pattern="\d{6}" maxlength="6"
+                                    placeholder="ddmmyy" title="6 digits (e.g. birthday ddmmyy)"
+                                    class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-green-500 focus:border-green-500 transition-colors">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Role</label>
+                                <select id="createRole" required
+                                    class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-green-500 focus:border-green-500 transition-colors">
+                                    <option value="employee">Employee</option>
+                                    <option value="manager">Manager</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-slate-700 px-6 py-4">
+                        <button type="submit" id="btnCreateUserSubmit"
+                            class="w-full flex justify-center items-center gap-2 rounded-lg shadow px-4 py-3 bg-green-600 text-white font-bold hover:bg-green-700 transition-colors active:scale-95">
+                            <span class="material-symbols-outlined text-[18px]">person_add</span> Create Account
+                        </button>
+                        <p id="createErrorMsg" class="text-xs text-red-500 text-center font-bold mt-3 h-4"></p>
                     </div>
                 </form>
             </div>
@@ -261,6 +328,55 @@
                 document.getElementById('authUsername').value = '';
                 document.getElementById('authPassword').value = '';
                 document.getElementById('authErrorMsg').innerText = '';
+            },
+
+            async handleCreateUser(e) {
+                e.preventDefault();
+                const salaryNo = document.getElementById('createSalaryNo').value.trim();
+                const password = document.getElementById('createPassword').value;
+                const role = document.getElementById('createRole').value;
+
+                if (!/^\d{6}$/.test(salaryNo)) {
+                    document.getElementById('createErrorMsg').innerText = "Salary No. must be 6 digits.";
+                    return;
+                }
+                if (!/^\d{6}$/.test(password)) {
+                    document.getElementById('createErrorMsg').innerText = "Password must be 6 digits.";
+                    return;
+                }
+
+                document.getElementById('createErrorMsg').innerText = "Creating user...";
+                document.getElementById('createErrorMsg').className = "text-xs text-yellow-500 text-center font-bold mt-3 h-4";
+                document.getElementById('btnCreateUserSubmit').disabled = true;
+
+                const email = salaryNo + '@standardize.dk';
+
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            role: role
+                        }
+                    }
+                });
+
+                document.getElementById('btnCreateUserSubmit').disabled = false;
+
+                if (error) {
+                    document.getElementById('createErrorMsg').innerText = error.message;
+                    document.getElementById('createErrorMsg').className = "text-xs text-red-500 text-center font-bold mt-3 h-4";
+                } else {
+                    document.getElementById('createErrorMsg').innerText = "User created successfully!";
+                    document.getElementById('createErrorMsg').className = "text-xs text-green-500 text-center font-bold mt-3 h-4";
+                    setTimeout(() => {
+                        this.closeModal('createUserModal');
+                        document.getElementById('createSalaryNo').value = '';
+                        document.getElementById('createPassword').value = '';
+                        document.getElementById('createRole').value = 'employee';
+                        document.getElementById('createErrorMsg').innerText = '';
+                    }, 1500);
+                }
             },
 
             async handleAddEmployee(e) {
