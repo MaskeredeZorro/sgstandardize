@@ -108,7 +108,7 @@
                     <span class="material-symbols-outlined">dark_mode</span>
                 </button>
 
-                <a href="../index.html"
+                <a href="../index"
                     class="hidden sm:flex items-center px-3 py-1.5 text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 rounded hover:bg-brand-100 dark:bg-brand-900/30 dark:text-brand-300 dark:border-brand-800 transition-colors">
                     <span class="material-symbols-outlined text-sm mr-1">dashboard</span> Switch to PMO
                 </a>
@@ -639,7 +639,7 @@
 
                 // Load PMO read-only mode in iframe after small delay for animation
                 setTimeout(() => {
-                    iframe.src = `Nexus PMO.html?viewProject=${pid}&readonly=true`;
+                    iframe.src = `Nexus PMO?viewProject=${pid}&readonly=true`;
                 }, 50);
 
                 this.openModal('projectModal');
