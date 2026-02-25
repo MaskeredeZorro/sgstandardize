@@ -271,6 +271,14 @@
         const SUPABASE_KEY = 'sb_publishable_Py_d0iK3ruDy5BSZAFD1-g_48fz6iZE';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Secondary client used strictly for creating new users without overriding the manager's active session
+        const adminAuthClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+            }
+        });
+
         const managerApp = {
             state: {
                 team: [], // Array of employee profiles
@@ -351,16 +359,21 @@
 
                 const email = salaryNo + '@standardize.dk';
 
-                const { data, error } = await supabaseClient.rpc('create_user_by_manager', {
-                    target_email: email,
-                    target_password: password,
-                    target_role: role
+                // Use the secondary client so the manager's current session is not logged out!
+                const { data, error } = await adminAuthClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            role: role
+                        }
+                    }
                 });
 
                 document.getElementById('btnCreateUserSubmit').disabled = false;
 
-                if (error || (data && !data.success)) {
-                    document.getElementById('createErrorMsg').innerText = error ? error.message : (data.error || "Failed to create user.");
+                if (error) {
+                    document.getElementById('createErrorMsg').innerText = error.message;
                     document.getElementById('createErrorMsg').className = "text-xs text-red-500 text-center font-bold mt-3 h-4";
                 } else {
                     document.getElementById('createErrorMsg').innerText = "User created successfully!";
