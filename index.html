@@ -3903,10 +3903,15 @@
                     .on('postgres_changes', { event: '*', schema: 'public', table: 'global_milestones' }, () => this.handleRemoteUpdate())
                     .subscribe();
             },
-            async handleRemoteUpdate() {
+            handleRemoteUpdate() {
                 if (!this.isDirty) {
-                    await this.loadFromSupabase();
-                    this.render();
+                    if (this.remoteUpdateTimeout) {
+                        clearTimeout(this.remoteUpdateTimeout);
+                    }
+                    this.remoteUpdateTimeout = setTimeout(async () => {
+                        await this.loadFromSupabase();
+                        this.render();
+                    }, 1000); // 1-second debounce to prevent API rate limiting
                 }
             },
             async shareProject() {
