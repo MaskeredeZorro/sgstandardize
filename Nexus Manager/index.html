@@ -351,20 +351,16 @@
 
                 const email = salaryNo + '@standardize.dk';
 
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        data: {
-                            role: role
-                        }
-                    }
+                const { data, error } = await supabaseClient.rpc('create_user_by_manager', {
+                    target_email: email,
+                    target_password: password,
+                    target_role: role
                 });
 
                 document.getElementById('btnCreateUserSubmit').disabled = false;
 
-                if (error) {
-                    document.getElementById('createErrorMsg').innerText = error.message;
+                if (error || (data && !data.success)) {
+                    document.getElementById('createErrorMsg').innerText = error ? error.message : (data.error || "Failed to create user.");
                     document.getElementById('createErrorMsg').className = "text-xs text-red-500 text-center font-bold mt-3 h-4";
                 } else {
                     document.getElementById('createErrorMsg').innerText = "User created successfully!";
