@@ -379,9 +379,15 @@
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide">Est.
                                         Savings</label>
-                                    <input
-                                        class="mt-1 block w-full border border-gray-300 dark:border-slate-600 rounded-md shadow-sm py-2 px-3 text-sm dark:bg-slate-700 dark:text-white"
-                                        name="estimatedSavings" type="text" placeholder="e.g. 500k DKK">
+                                    <div class="mt-1 flex rounded-md shadow-sm">
+                                        <input
+                                            class="flex-1 block w-full min-w-0 border border-r-0 border-gray-300 dark:border-slate-600 rounded-none rounded-l-md py-2 px-3 text-sm dark:bg-slate-700 dark:text-white"
+                                            name="estimatedSavings" type="number" step="any" placeholder="e.g. 500">
+                                        <span
+                                            class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-gray-400 text-sm">
+                                            kDKK
+                                        </span>
+                                    </div>
                                 </div>
                                 <div>
                                     <label
@@ -744,9 +750,9 @@
             <div class="fixed inset-0 bg-gray-900 bg-opacity-80 transition-opacity"
                 onclick="app.closeModal('orgModal')"></div>
             <div
-                class="inline-block align-bottom bg-gray-50 dark:bg-slate-900 rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle w-full max-w-5xl h-[85vh] flex flex-col">
+                class="inline-block align-bottom bg-white dark:bg-slate-800 rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle w-full max-w-5xl h-[85vh] flex flex-col">
                 <div
-                    class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 flex justify-between items-center bg-white dark:bg-slate-800 z-20 shrink-0">
+                    class="px-6 py-4 border-b border-gray-200 dark:border-slate-700 flex justify-between items-center bg-gray-50 dark:bg-slate-900 z-20 shrink-0">
                     <div>
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white">Project Organization</h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400" id="orgProjectName"></p>
@@ -1102,7 +1108,8 @@
                             <div>
                                 <label
                                     class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Password</label>
-                                <input id="authPassword" type="password" required
+                                <input id="authPassword" type="password" required minlength="15"
+                                    title="Must be at least 15 characters"
                                     class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition-colors">
                             </div>
                         </div>

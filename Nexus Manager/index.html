@@ -154,8 +154,8 @@
                             <div>
                                 <label
                                     class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Password</label>
-                                <input id="authPassword" type="password" required pattern="\d{6}" maxlength="6"
-                                    placeholder="ddmmyy" title="6 digits (e.g. birthday ddmmyy)"
+                                <input id="authPassword" type="password" required minlength="15"
+                                    placeholder="Enter your password" title="Must be at least 15 characters"
                                     class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-brand-500 focus:border-brand-500 transition-colors">
                             </div>
                         </div>
@@ -202,8 +202,8 @@
                             <div>
                                 <label
                                     class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Password</label>
-                                <input id="createPassword" type="password" required pattern="\d{6}" maxlength="6"
-                                    placeholder="ddmmyy" title="6 digits (e.g. birthday ddmmyy)"
+                                <input id="createPassword" type="password" required minlength="15"
+                                    placeholder="Enter secure password" title="Must be at least 15 characters"
                                     class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-green-500 focus:border-green-500 transition-colors">
                             </div>
                             <div>
@@ -348,8 +348,8 @@
                     document.getElementById('createErrorMsg').innerText = "Salary No. must be 6 digits.";
                     return;
                 }
-                if (!/^\d{6}$/.test(password)) {
-                    document.getElementById('createErrorMsg').innerText = "Password must be 6 digits.";
+                if (password.length < 15) {
+                    document.getElementById('createErrorMsg').innerText = "Password must be at least 15 characters.";
                     return;
                 }
 
