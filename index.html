@@ -2910,6 +2910,18 @@
                 }
             },
 
+            syncHNodeText(id, text) {
+                const pid = this.currentHierarchyProjectId;
+                const p = this.data.projects.find(x => x.id === pid);
+                if (!p) return;
+                const node = p.hierarchy.find(n => n.id === id);
+                if (node) {
+                    node.text = text;
+                    if (id === 'root') p.name = text;
+                    this.markDirty();
+                }
+            },
+
             deleteHNode(id) {
                 const pid = this.currentHierarchyProjectId;
                 const p = this.data.projects.find(x => x.id === pid);
