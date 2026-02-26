@@ -1435,7 +1435,7 @@
                         status: a.status,
                         dueDate: a.due_date,
                         outcome: a.outcome || null,
-                        completedAt: a.completed_at || null
+                        completedAt: a.completed_at ? new Date(a.completed_at).getTime() : null
                     }));
 
                     this.data.milestones = resMilestones.data.map(m => ({
