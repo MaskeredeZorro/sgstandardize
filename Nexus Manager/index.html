@@ -639,7 +639,7 @@
 
                 // Load PMO read-only mode in iframe after small delay for animation
                 setTimeout(() => {
-                    iframe.src = `Nexus PMO?viewProject=${pid}&readonly=true`;
+                    iframe.src = `../index?viewProject=${pid}&readonly=true`;
                 }, 50);
 
                 this.openModal('projectModal');
