@@ -113,6 +113,12 @@
                     <span class="material-symbols-outlined text-sm mr-1">dashboard</span> Switch to PMO
                 </a>
 
+                <button
+                    class="hidden sm:flex items-center px-3 py-1.5 text-xs font-bold text-gray-700 bg-gray-50 border border-gray-200 rounded hover:bg-gray-100 dark:bg-slate-800 dark:text-gray-300 dark:border-slate-700 transition-colors"
+                    onclick="managerApp.openModal('editPasswordModal')">
+                    <span class="material-symbols-outlined text-sm mr-1">manage_accounts</span> Edit Password
+                </button>
+
                 <button id="btnLogout"
                     class="hidden sm:flex items-center px-3 py-1.5 text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded hover:bg-red-100 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800 transition-colors"
                     onclick="managerApp.handleLogout()">
@@ -235,6 +241,47 @@
         </div>
     </div>
 
+    <!-- EDIT PASSWORD MODAL -->
+    <div class="hidden fixed inset-0 z-[100] overflow-y-auto" id="editPasswordModal">
+        <div class="flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm"
+                onclick="managerApp.closeModal('editPasswordModal')"></div>
+            <div
+                class="inline-block align-bottom bg-white dark:bg-slate-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md w-full relative z-[110]">
+                <form onsubmit="managerApp.handleEditPassword(event)">
+                    <div class="bg-white dark:bg-slate-800 px-6 py-6 border-t-4 border-gray-500">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Change Password</h3>
+                            <button type="button" class="text-gray-400 hover:text-gray-500"
+                                onclick="managerApp.closeModal('editPasswordModal')">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-6">Enter a new secure password for your manager account.</p>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">New
+                                    Password</label>
+                                <input id="newManagerPasswordInput" type="password" required minlength="15"
+                                    placeholder="Enter secure password" title="Must be at least 15 characters"
+                                    class="w-full border-2 border-gray-200 dark:border-slate-600 rounded shadow-sm py-2 px-3 dark:bg-slate-700 dark:text-white focus:ring-gray-500 focus:border-gray-500 transition-colors">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-slate-700 px-6 py-4">
+                        <button type="submit" id="btnEditManagerPasswordSubmit"
+                            class="w-full flex justify-center items-center gap-2 rounded-lg shadow px-4 py-3 bg-gray-600 text-white font-bold hover:bg-gray-700 transition-colors active:scale-95">
+                            <span class="material-symbols-outlined text-[18px]">save</span> Update Password
+                        </button>
+                        <p id="editManagerPasswordErrorMsg" class="text-xs text-red-500 text-center font-bold mt-3 h-4">
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- PROJECT MODAL (READ ONLY) -->
     <div class="hidden fixed inset-0 z-50 overflow-y-auto" id="projectModal">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -331,6 +378,36 @@
                     this.closeModal('authModal');
                     await this.loadData();
                     this.setupRealtimeSync();
+                }
+            },
+
+            async handleEditPassword(e) {
+                e.preventDefault();
+                const newPassword = document.getElementById('newManagerPasswordInput').value;
+                const errorEl = document.getElementById('editManagerPasswordErrorMsg');
+                const btnSubmit = document.getElementById('btnEditManagerPasswordSubmit');
+
+                errorEl.innerText = "Updating password...";
+                errorEl.className = "text-xs text-yellow-500 text-center font-bold mt-3 h-4";
+                btnSubmit.disabled = true;
+
+                const { data, error } = await supabaseClient.auth.updateUser({
+                    password: newPassword
+                });
+
+                btnSubmit.disabled = false;
+
+                if (error) {
+                    errorEl.innerText = error.message;
+                    errorEl.className = "text-xs text-red-500 text-center font-bold mt-3 h-4";
+                } else {
+                    errorEl.innerText = "Password updated successfully!";
+                    errorEl.className = "text-xs text-green-500 text-center font-bold mt-3 h-4";
+                    setTimeout(() => {
+                        this.closeModal('editPasswordModal');
+                        document.getElementById('newManagerPasswordInput').value = '';
+                        errorEl.innerText = '';
+                    }, 1500);
                 }
             },
 
