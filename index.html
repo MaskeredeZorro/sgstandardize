@@ -1395,10 +1395,15 @@
                         owner: p.owner,
                         status: p.status || 'on_track',
                         prioritization: p.prioritization,
+                        startDate: p.start_date,
                         endDate: p.end_date,
+                        inScope: p.in_scope || '',
+                        outScope: p.out_scope || '',
                         businessCritical: p.business_critical,
                         businessValue: p.business_value,
                         effort: p.effort,
+                        resourceReq: p.resource_req || '',
+                        prerequisites: p.prerequisites || '',
                         estimatedSavings: p.estimated_savings,
                         deliverables: p.deliverables,
                         itInvolved: p.it_involved,
@@ -1407,7 +1412,8 @@
                         orgManager: p.org_manager || '',
                         orgOwner: p.org_owner || '',
                         orgInput: p.org_input || '',
-                        statusHistory: []
+                        orgSteering: p.org_steering || '',
+                        statusHistory: p.status_history || []
                     }));
 
                     this.data.stakeholders = resStakeholders.data.map(s => ({
@@ -1424,9 +1430,12 @@
                     this.data.actions = resActions.data.map(a => ({
                         id: Number(a.id),
                         projectId: Number(a.project_id),
+                        stakeholderId: Number(a.stakeholder_id),
                         text: a.text,
                         status: a.status,
-                        dueDate: a.due_date
+                        dueDate: a.due_date,
+                        outcome: a.outcome || null,
+                        completedAt: a.completed_at || null
                     }));
 
                     this.data.milestones = resMilestones.data.map(m => ({
